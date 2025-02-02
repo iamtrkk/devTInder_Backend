@@ -1,0 +1,10 @@
+* app.use will be matched on each call irrespective of HTTP method.
+* Home path should be at bottom otherwise it will be returned
+    /trk/create
+    /trk    //This should be at the end other wise it will be returned on /trk/create
+
+* Route patterns
+  /ab?c : it means b is optional it will be matched to /bc also and /abc also
+  /ab+c : it means b b can be repeated /abbbbbbbbc
+  /a*c  : there can be anything in place of * /atrkc
+  We can also write regex in the url
