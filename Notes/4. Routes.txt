@@ -1,0 +1,18 @@
+In Express.js, app.use() is a method used to mount middleware in your application. Middleware are functions that can process requests before they reach the route handlers. They have access to the request (req), response (res), and the next function, which passes control to the next middleware in the stack.
+
+Key Points about app.use():
+Middleware Mounting: You use app.use() to tell Express to use specific middleware for handling requests to your server.
+Path Parameter: It can accept a path as its first argument, which means the middleware will only be used for requests that match the given path.
+Global Middleware: If no path is provided, the middleware will be applied to all incoming requests.
+Order of Execution: Express executes middleware in the order in which they are defined, so the sequence in which you use app.use() is important.
+
+* app.use will be matched on each call irrespective of HTTP method.
+* Home path should be at bottom otherwise it will be returned
+    /trk/create
+    /trk    //This should be at the end other wise it will be returned on /trk/create
+
+* Route patterns
+  /ab?c : it means b is optional it will be matched to /bc also and /abc also
+  /ab+c : it means b b can be repeated /abbbbbbbbc
+  /a*c  : there can be anything in place of * /atrkc
+  We can also write regex in the url

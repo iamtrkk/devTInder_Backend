@@ -1,29 +1,34 @@
 const express = require("express");
+const connectDB = require("./config/database");
+const User = require("./models/user");
+const cookieParser = require("cookie-parser");
+const { userAuth } = require("./middlewares/auth");
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
+const userRouter = require("./routes/user");
+const feedRouter = require("./routes/feed");
 
 const app = express();
 
-app.get("/user", (req, res) => {
-  res.send("I m Trk");
-});
+// common middle ware which will be matched to all requests because path is empty
+app.use(express.json()); // converts incoming json body to js object which known to js
+app.use(cookieParser()); //Prases cookie to readable form
 
-app.post("/user", (req, res) => {
-  res.send("Data posted");
-});
+// Routers
+app.use("/", authRouter);
+app.use("/user", userAuth, userRouter);
+app.use("/profile", userAuth, profileRouter);
+app.use("/request", userAuth, requestRouter);
+app.use("/feed", userAuth, feedRouter);
 
-app.delete("/user", (req, res) => {
-  res.send("user deleted");
-});
-
-app.use("/test", (req, res) => {
-  res.send("Helo");
-});
-
-//Should be always at botttom otherwise it will be returned for all endpoints
-//Also app.use matches all the HTTP methods so it will be returned not matter if method is get or not
-app.use("/", (req, res) => {
-  res.send("This is home");
-});
-
-app.listen(5678, () => {
-  console.log("Server chaalu hai port 5678");
-});
+connectDB()
+  .then(() => {
+    console.log("Database connection established...");
+    app.listen(5678, () => {
+      console.log("Server is successfully listening to port 5678");
+    });
+  })
+  .catch((err) => {
+    console.error("Couldn't connect to Database");
+  });

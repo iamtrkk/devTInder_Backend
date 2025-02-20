@@ -1,3 +1,4 @@
+// Demo using mongodb package
 const { MongoClient } = require("mongodb");
 
 const URI =
