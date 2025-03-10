@@ -9,6 +9,14 @@ router.get("/", async (req, res) => {
   try {
     const loggedInUser = req.user;
 
+    //Pagination to get limited records with page no.
+    const page = parseInt(req.query.page) || 1; //if not query passed use default
+    let limit = parseInt(req.query.limit) || 10; // 10 docs per page
+    limit = limit > 50 ? 50 : limit; //corner case user can send any high number limit which will be costly
+    // this is used by mongoDB to skip 1st specified number of results and send rest
+    //if 5 then it will it will not return first 5 results
+    const skip = (page - 1) * limit;
+
     //User should see all the user cards except:
     //2. his connections
     //3. ignored people
@@ -17,7 +25,7 @@ router.get("/", async (req, res) => {
       //selecting request I have sent or received
       $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
       //selecting fields we need other wise it get all fields same as populate where we select field
-    }).select("fromUserId toUserId"); 
+    }).select("fromUserId toUserId");
     // to store unique Ids from to and from
     const hideUsersFromFeed = new Set();
 
@@ -34,7 +42,10 @@ router.get("/", async (req, res) => {
         { _id: { $nin: Array.from(hideUsersFromFeed) } },
         { _id: { $ne: loggedInUser._id } },
       ],
-    }).select(USER_SAFA_DATA);
+    })
+      .select(USER_SAFA_DATA)
+      .skip(skip)
+      .limit(limit);
 
     res.send(users);
   } catch (err) {
