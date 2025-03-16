@@ -8,10 +8,17 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const feedRouter = require("./routes/feed");
+const cors = require("cors");
 
 const app = express();
 
 // common middle ware which will be matched to all requests because path is empty
+app.use(
+  cors({
+    origin: "http://localhost:5173", // white listed domains
+    credentials: true, // send cookies that is token here for auth
+  })
+); // allow cross origin
 app.use(express.json()); // converts incoming json body to js object which known to js
 app.use(cookieParser()); //Prases cookie to readable form
 

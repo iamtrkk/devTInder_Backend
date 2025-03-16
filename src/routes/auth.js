@@ -74,7 +74,7 @@ router.post("/login", async (req, res) => {
       // { expires: new Date(Date.now() + 8 * 3600000) } //means browser cookie will cleared in 8 hours but will stay valid at jwt level
     );
 
-    res.send("Login successful");
+    res.send(user);
   } catch (err) {
     res.status(400).send(err.message);
   }

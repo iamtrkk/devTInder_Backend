@@ -27,7 +27,8 @@ router.patch("/:userId", async (req, res) => {
   try {
     // API level validation to restrict modification of some fields like email
     const ALLOWED_UPDATES = [
-      "userId",
+      'firstName',
+      'lastName',
       "photoUrl",
       "about",
       "gender",
