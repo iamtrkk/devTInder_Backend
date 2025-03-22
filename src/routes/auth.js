@@ -21,7 +21,7 @@ router.post("/signup", async (req, res) => {
     validateSignUpData(body);
 
     // Getting data from request
-    const { firstName, lastName, gender, emailId, password } = body;
+    const { firstName, lastName, emailId, password } = body;
 
     // encypting password to 10 salt bsically a encryption level
     const passwordHash = await bcrypt.hash(password, 10);
@@ -31,15 +31,24 @@ router.post("/signup", async (req, res) => {
     const user = new User({
       firstName,
       lastName,
-      gender,
+      // gender,
       emailId,
       password: passwordHash,
     });
 
     //DB crud operations always returns a promise so we have to use async await
-    await user.save();
+    const savedUser = await user.save();
 
-    res.send("User added successfully");
+    const token = await user.getJWT(); //no need to pass user.id, using instance of user which automaticlly gets id using this
+
+    //Now add the token to cookie and send the response back to user
+    res.cookie(
+      "token",
+      token
+      // { expires: new Date(Date.now() + 8 * 3600000) } //means browser cookie will cleared in 8 hours but will stay valid at jwt level
+    );
+
+    res.json({ message: "User added successfully", data: savedUser });
   } catch (err) {
     res.status(400).send("Error saving user: " + err.message);
   }

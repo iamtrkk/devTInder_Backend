@@ -86,7 +86,7 @@ router.get("/requests/received", async (req, res) => {
     );
     // .populate("fromUserId", ["firstName", "lastName"]);
 
-    if (!connectionRequests.length) throw new Error("No requests found");
+    // if (!connectionRequests.length) throw new Error("No requests found");
 
     res.json({
       message: "Data fetched successfully",

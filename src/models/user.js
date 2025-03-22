@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      required: true,
+      // required: true,
       validate(value) {
         //custom validation
         if (!["male", "female", "others"].includes(value)) {
