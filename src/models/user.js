@@ -74,6 +74,10 @@ const userSchema = new mongoose.Schema(
     skills: {
       type: [String],
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
