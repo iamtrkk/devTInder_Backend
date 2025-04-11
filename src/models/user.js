@@ -100,7 +100,8 @@ userSchema.methods.getJWT = async function () {
   const user = this;
 
   // Here we create token and hide the logged in user id inside that token
-  const token = await jwt.sign({ _id: user._id }, "dev@Trk386", {
+  const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+    // same secret should be used during verify
     expiresIn: "1d", //means need to login again next day
   });
   return token;

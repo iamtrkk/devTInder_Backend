@@ -1,6 +1,5 @@
 const express = require("express");
 const connectDB = require("./config/database");
-const User = require("./models/user");
 const cookieParser = require("cookie-parser");
 const { userAuth } = require("./middlewares/auth");
 const authRouter = require("./routes/auth");
@@ -9,6 +8,8 @@ const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const feedRouter = require("./routes/feed");
 const cors = require("cors");
+
+require("dotenv").config();
 
 const app = express();
 
@@ -32,7 +33,7 @@ app.use("/feed", userAuth, feedRouter);
 connectDB()
   .then(() => {
     console.log("Database connection established...");
-    app.listen(5678, () => {
+    app.listen(process.env.PORT, () => {
       console.log("Server is successfully listening to port 5678");
     });
   })

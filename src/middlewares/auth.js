@@ -6,10 +6,10 @@ const userAuth = async (req, res, next) => {
   try {
     //getting token which is set on user browser while login
     const { token } = req.cookies;
-    if (!token) return res.status(401).send('Please Login!')
+    if (!token) return res.status(401).send("Please Login!");
 
     // will get the hidden id from token which was hided during login
-    const decodedObj = await jwt.verify(token, "dev@Trk386"); //secret key used during signing the token
+    const decodedObj = await jwt.verify(token, process.env.JWT_SECRET); //secret key used during signing the token
     const { _id } = decodedObj;
 
     // then will use that id to get user details

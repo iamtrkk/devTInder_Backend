@@ -70,7 +70,7 @@ router.post("/login", async (req, res) => {
 
     //Now if password valid create JWT Token
     // Here we create token and hide the logged in user id inside that token
-    // const token = await jwt.sign({ _id: user._id }, "dev@Trk386", { // moved to user schema
+    // const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { // moved to user schema
     //   expiresIn: "1d", //means need to login again next day
     // });
 
