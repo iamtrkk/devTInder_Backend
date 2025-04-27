@@ -8,6 +8,9 @@ const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const feedRouter = require("./routes/feed");
 const cors = require("cors");
+const http = require("http"); //requires to use socket
+const socket = require("socket.io");
+const initializeSocket = require("./utils/socket");
 
 require("dotenv").config();
 
@@ -30,10 +33,15 @@ app.use("/profile", userAuth, profileRouter);
 app.use("/request", userAuth, requestRouter);
 app.use("/feed", userAuth, feedRouter);
 
+const server = http.createServer(app); // creating server using http as its required for sockets
+initializeSocket(server);
+
 connectDB()
   .then(() => {
     console.log("Database connection established...");
-    app.listen(process.env.PORT, () => {
+    // app.listen(process.env.PORT, () => {
+    // replaced app with server
+    server.listen(process.env.PORT, () => {
       console.log("Server is successfully listening to port 5678");
     });
   })
