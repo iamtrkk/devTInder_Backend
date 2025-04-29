@@ -7,6 +7,7 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const feedRouter = require("./routes/feed");
+const chatRouter = require("./routes/chat");
 const cors = require("cors");
 const http = require("http"); //requires to use socket
 const socket = require("socket.io");
@@ -32,6 +33,7 @@ app.use("/user", userAuth, userRouter);
 app.use("/profile", userAuth, profileRouter);
 app.use("/request", userAuth, requestRouter);
 app.use("/feed", userAuth, feedRouter);
+app.use("/chat", userAuth, chatRouter);
 
 const server = http.createServer(app); // creating server using http as its required for sockets
 initializeSocket(server);
